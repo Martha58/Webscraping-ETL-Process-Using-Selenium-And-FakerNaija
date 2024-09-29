@@ -1,0 +1,477 @@
+from faker import Faker
+from fakernaija import Naija
+from random import randint
+from random import choice
+import pandas as pd
+import numpy as np
+import random
+import datetime
+import psycopg2
+import locale
+
+# call Naija
+naija = Naija()
+
+# generate customer table
+def customers_details(cd):
+    customers_table = pd.DataFrame()
+
+    for customer in range(0, cd):
+        first_name = naija.first_name()
+        last_name = naija.last_name()
+        # save the list of all the product available and their price
+        item_bought = ['Chivita Happy Hour 1Ltr - Carton ₦13,680.00',
+       'Chivita Active Juice 1ltr - Carton ₦13,930.00',
+       'Chivita Active Juice 1ltr - 1pc ₦1,545.00',
+       'Hollandia Evap Milk 190g- Carton ₦21,980.00',
+       'Hollandia Evap Milk 120g - Carton ₦12,250.00',
+       'Hollandia Evap Milk 50g - Carton ₦8,680.00',
+       'Hollandia Yoghurt Strawberry Carton - 500ml ₦9,730.00',
+       'Hollandia Yoghurt Strawberry Per Pc - 500ml ₦1,050.00',
+       'Jubi Magarine Carton - 15kg ₦35,800.00',
+       'Fresh Cashew Nut - Big Bottle (75cl) ₦4,980.00',
+       'Heinz Baked Beanz 4.5g - 24pcs (Carton) ₦15,320.00',
+       'Famous Amos Chocolate Chips 56g X42 (Carton) ₦41,500.00',
+       'Trs Almonds 375g X15 (Carton) ₦25,150.00',
+       'Trs Almonds 100g X15 (Carton) ₦13,761.00',
+       'Kirkland Signature Organic Soy 946ml X12 (Carton) ₦17,990.00',
+       'So Delicious Organic Coconut Milk 946ml X2 (2 Bottles) ₦12,480.00',
+       'Stute Superior Tropical Fruit 1.5litres X9 (Carton) ₦14,120.00',
+       'Stute Superior Red Grape - 1.5litres (Carton) ₦27,680.00',
+       'Skippy Peanut(Creamy) 1.36kg Bottle ₦11,980.00',
+       'Skippy Peanut(Extra Crunchy) 1.36kg Bottle ₦11,980.00',
+       'Hungry Jack 907g X12 (Carton) ₦67,200.00',
+       'Lipton Black Tea 750g X3 ₦8,500.00',
+       'Millville Rolled Oats 1.19kg X6 (Carton) ₦65,950.00',
+       'Nestle Coffee Mate 1.5kg X6 (Carton) ₦30,000.00',
+       'Kelloggs Frosties 1kg (1 Box) ₦16,120.00',
+       'Heinz Tomato Ketchup 1.25kg ₦7,800.00',
+       '2sure Hand And Surface Sanitizer - 500ml ₦1,080.00',
+       '2sure Hand And Surface Liquid Sanitizer -250ml ₦698.00',
+       '2Sure Hand And Surface Liquid Sanitizer -100ml ₦500.00',
+       '2Sure Hand Sanitizer Gel -250ml ₦725.00',
+       'Caprissone Fruit Drink- 200ml X 16Pcs ₦5,980.00',
+       'Green Giant Sweetcorn- About 340g ₦2,680.00',
+       'Heinz Beanz- About 200g ₦500.00',
+       'Heinz Beanz- About 415g ₦800.00',
+       'Exeter Corned Beef - 340g ₦5,380.00',
+       'Exeter Corned Beef - 200g ₦2,630.00',
+       'Geisha Mackerel In Tomato Sauce - 155g ₦1,380.00',
+       'Titus Sardine (Can Fish) - 125g ₦1,280.00',
+       'GROUNDNUT -BIG BOTTLE_PEELED (75cl) ₦2,480.00',
+       'Minimie Chinchin Bottle 900g ₦3,680.00',
+       'Minimie Chinchin Jumbo Pack ₦185.00',
+       'Easy On Spray Starch - 567g (Blue ) ₦3,380.00',
+       'Easy On Spray Starch - 567g (Purple ) ₦3,490.00',
+       'Ariel Detergent Ankara Colour - 2kg ₦6,180.00',
+       'Ariel Detergent - 800g ₦3,450.00',
+       'Duracell Alkaline Power AA Battery (Set Of 4) ₦4,580.00',
+       'Duracell Plus AAA Alkaline Batteries (Set Of 4) ₦2,780.00',
+       'Bounty Chocolate 57g ₦1,450.00', 'Twix 50g ₦1,430.00',
+       'Mars 50g ₦1,430.00', 'Snickers 50g Bar ₦1,430.00',
+       "Mcvitie'S The Original Hobnobs Oat Biscuit ₦3,671.00",
+       "Mcvitie'S Digestive Biscuit 250g ₦2,930.00",
+       "Mcvitie'S All Butter Shortbread Biscuit (Big) ₦2,335.00",
+       "Mcvitie'S All Butter Shortbread Biscuit (Small) ₦1,880.00",
+       'Checkers Custard 400g ₦1,420.00',
+       'Checkers Custard Refill, Vanilla Flavor 1kg ₦2,190.00',
+       'St Louis Sugar Cube Sugar ₦2,720.00',
+       'Three Crown Milk 160g (Tin) ₦420.00',
+       'Peak Milk 800g (Sachet) ₦7,995.00',
+       'Peak Powdered Milk 360g (Sachet) ₦3,830.00',
+       'Lipton Yellow Label Tea ₦720.00',
+       'Nasco Corn Flakes 350g ₦2,980.00',
+       'Lipton Lemon Drink X 12 ₦2,230.00',
+       'Bold Orange Drink X 12 ₦2,130.00',
+       'Bold Tropical Drink X 12 ₦2,130.00',
+       'Fresh Yo Milk Drink 125ml X 16 ₦3,480.00',
+       'Checkers Custard (3 In 1) 1.5kg ₦6,565.00',
+       'Cway Nutri Milk Drink X 12 ₦5,680.00',
+       'Cway Nutri Yo Drink X 12 ₦5,680.00',
+       'Alpenliebe (30 Pieces) ₦950.00',
+       'Ok Sweets Banana And Cream (52 Pieces) ₦2,920.00',
+       'Coaster Biscuit Carton (48 Pieces) ₦3,250.00',
+       'Parle G Biscuit 45g (48 Packets) ₦3,250.00',
+       'Noreos Strawberry Biscuits (48 Pieces) ₦3,500.00',
+       'Noreos Orange Biscuits (48 Pieces) ₦4,080.00',
+       'Noreos Choco Biscuits (48 Pieces) ₦3,850.00',
+       'Munch It Sour Cream And Onion (Roll Of 10) ₦2,070.00',
+       'Munch It Sweet Surprise (Roll Of 10) ₦2,070.00',
+       'Classic Peanut Snacks (Roll Of 13) ₦1,000.00',
+       'STK Royal Yeast (Carton) ₦59,750.00',
+       'Golden Penny Sugar 50kg ₦93,850.00',
+       'Dangote Sugar 50kg ₦93,850.00',
+       'MamaGold Flour -About 50kg ₦66,950.00',
+       'Dettol Anti-Bacteria Cool Soap 110g (Pack Of 6) ₦5,730.00',
+       'Dettol Anti-Bacterial Soap Skin Care 110g (Pack Of 6) ₦5,730.00',
+       'Dettol Original Anti-Bacteria Soap 110g (Pack Of 6) ₦5,730.00',
+       'Dettol Anti-Bacteria Cool Soap 65g (Pack Of 6) ₦3,735.00',
+       'Dettol Anti-Bacterial Soap Skin Care 75g (Pack Of 6) ₦3,735.00',
+       'Dettol Original Anti-Bacteria Soap 75g (Pack Of 6) ₦3,735.00',
+       "Foster Clark'S Food Colouring ₦750.00",
+       'Oluji Cocoa Powder ₦2,120.00',
+       "Foster Clark'S Flavour (1 Piece) ₦750.00",
+       'Napa Valley Cooking Margarine 250g ₦1,080.00',
+       'Popcorn Seeds - 1 Paint ₦14,580.00',
+       'Popcorn Seeds Half Paint ₦7,730.00',
+       'Vizyon Whipping Cream ₦12,320.00',
+       'Nutriblend Whipping Cream ₦11,950.00',
+       'Falcon Cling Film Wrap ₦550.00', 'Simas Margarine ₦1,080.00',
+       "Baker'S Choice Browning ₦1,790.00", 'Joy Aluminum Foil ₦830.00',
+       'Falcon Parchment Paper ₦1,280.00',
+       "Foster Clark'S Flour Essence X 12 ₦8,980.00",
+       'Granulated Sugar 1 Paint ₦9,970.00',
+       'STK Royal Instant Dry Yeast 500g ₦3,150.00',
+       'All Purpose Flour (1 Paint) - 3kg ₦5,130.00',
+       "Foster Clark'S Baking Powder ₦4,530.00",
+       'Sunripe Dried Fruits 1 Pack ₦1,050.00',
+       "Baker'S Choice Icing Sugar 500g ₦1,925.00",
+       "Baker'S Choice Icing Sugar 1kg ₦2,980.00",
+       "Hershey'S Chocolate Syrup ₦7,230.00",
+       'Amel Susan Corn Flour ₦1,880.00',
+       'Golden Penny Spread 900g ₦1,700.00',
+       'Golden Penny Spread 450g ₦1,080.00',
+       'Golden Penny Spread 250g ₦785.00',
+       'Dettol Antiseptic Disinfectant Liquid - 165ml ₦2,680.00',
+       'Dettol Antiseptic Liquid Disinfectant - 2ltr ₦17,920.00',
+       'Dettol Antiseptic Liquid Disinfectant - 250ml ₦3,885.00',
+       'Raid Multi-Purpose Insect Killer- 500ml ₦4,580.00',
+       'Rambo Insecticide - 500ml ₦4,185.00',
+       'Rambo Insecticide - 300ml ₦2,980.00',
+       'Raid Multi-Purpose Insect Killer- 300ml ₦3,480.00',
+       'Savlon Antiseptic 750ml ₦6,210.00',
+       'MORTEIN ALL INSECTS KILLER LEMON - 250ML ₦2,980.00',
+       'Baygon Insecticide - 500ml ₦4,730.00',
+       'Baygon Insecticide - 300ml ₦3,295.00',
+       'Delta Delta Medicated Soap 175G ₦520.00',
+       'Dettol Original Anti-Bacteria Soap - 60g ₦775.00',
+       'Dettol Original Anti-Bacteria Soap - 110g ₦1,100.00',
+       'Dettol Anti-Bacterial Soap Skin Care - 60g ₦775.00',
+       'Dettol Anti-Bacterial Soap Skin Care - 110g ₦1,100.00',
+       'Dettol Anti-Bacteria Cool Soap - 60g ₦775.00',
+       'Dettol Anti-Bacteria Cool Soap - 160g ₦1,580.00',
+       'COLGATE MAXFRESH COOLMINT 100 ML ₦850.00',
+       'ORAL B TOOTHPASTE 130G ₦2,380.00',
+       'COLGATE MAX CAVITY PROTECTION GEL 150G ₦700.00',
+       'COLGATE MAX FRESH SPICY RED 130G ₦700.00',
+       'CLOSEUP TRIPPLE FRESH FORMILA - 140G ₦630.00',
+       'LISTERINE MOUTH WASH COOLMINT 250ml ₦2,195.00',
+       'ORAL B HERBAL MINT TOOTHPASTE 140G ₦2,780.00',
+       'SENSODYNE EXTRA FRESH TOOTHPASTE ₦1,150.00',
+       'SENSODYNE RAPID ACTION TOOTHPASTE ₦1,230.00',
+       'SAFEGUARD SOAP WHITE 175G(Pack Of 6) ₦7,105.00',
+       'SAFEGUARD SOAP LEMON FRESH 175G (Pack Of 6) ₦7,105.00',
+       'Air Wick Gel Air Freshener (Rose)- 45g ₦720.00',
+       'Sunshine Block Air Freshner ₦395.00',
+       'Sunshine Block Air Freshener (Blackcurrant) ₦395.00',
+       'Sunshine Block Air Freshener (Orange) ₦395.00',
+       'Air Wick Gel Air Freshener (Fresh Water)- 45g ₦720.00',
+       'Air Wick Gel Air Freshener (Lavender)- 45g ₦720.00',
+       'Air Wick Freshmatic Max Spray Refill -(Sparkling Citrus) (250ml) ₦3,290.00',
+       'Wind Air Freshener Mistal 150g ₦990.00',
+       'Glade Airfreshner 300ml Warm Vanilla ₦2,750.00',
+       'Ariel Detergent Powder - 2kg ₦7,280.00',
+       'Morning Fresh Original 1 Ltr ₦2,250.00',
+       'Rose Plus Toilet Tissue ₦199.00',
+       "Rose Belle Serviette 50'S ₦750.00",
+       'Rose Belle Toilet Rolls - 2in1 Pack ₦648.00',
+       'Rose Carla Improved Tissue ₦365.00',
+       'Windolene 4Action Glass And Shiny Surface Cleaner 500ml ₦2,050.00',
+       'Carex Hand Wash Assorted 250ml ₦2,050.00',
+       'HARPIC POWER PLUS ORIGINAL - 725ML ₦3,565.00',
+       'HARPIC POWER PLUS ORIGINAL - 450ML ₦2,790.00',
+       'Hypo Toilet Cleaner (725ml) ₦4,105.00',
+       'Hypo Super Bleach - 500ml ₦1,550.00',
+       'Hypo Super Bleach - 3.5Ltr ₦8,890.00',
+       'Hypo Super Bleach - 1Ltr ₦2,415.00',
+       'NESTLE Pure Life Water 60CL ₦150.00',
+       'NESTLE Pure Life Water 60CL X 20 ₦2,280.00',
+       'EVA Table Water 75CL X 12 ₦3,890.00',
+       'EVA Table Water 1.5L X 12 ₦4,650.00',
+       'J&W Premium Grape Juice - 75cl ₦4,280.00',
+       'Eva Non-Alcoholic Wine-75cl ₦4,280.00',
+       'Amstel Malt Can 33cl ₦525.00',
+       'Amstel Malt Can 33cl X 24pcs ₦11,980.00',
+       'BIGI COLA 60CL PET ₦325.00',
+       'BIGI COLA 60CL PET X 12pcs ₦3,825.00',
+       'BIGI APPLE FLAVOUR 35CL PET X 12pcs ₦3,825.00',
+       'Malta Guiness CAN 33CL ₦525.00',
+       'Malta Guiness CAN 33CL X 24 Cans ₦11,980.00',
+       'PEPSI PET 50CL X 12pcs ₦3,925.00',
+       'COCA COLA PET 1Ltr X 6pcs ₦3,955.00',
+       'Freshyo Yoghurt 116ml ₦195.00',
+       'Freshyo Yoghurt 116ml X 16 ₦2,880.00',
+       'Lucozade Boost 125ml ₦265.00',
+       'Lucozade Boost 125ml X 16 ₦3,780.00',
+       'Ribena Blackcurrant Or Strawberry- 125ml ₦265.00',
+       'Ribena Blackcurrant Or Strawberry- 125ml (X 16) ₦3,780.00',
+       'Chivita Happy Hour Tropical (Children Drink) -150ml×24 ₦4,180.00',
+       'LaCasera Smoov Chapman 60 CL ₦250.00',
+       'LaCasera Smoov Chapman 50 CL X 12 ₦2,480.00',
+       'Cway Superkids Apple 210ml X 24 ₦4,680.00',
+       'CAPRISONNE FRUIT DRINK 200ML ₦380.00',
+       'CAPRISONNE FRUIT DRINK 200ML X 40 ( 1 Carton) ₦10,980.00',
+       'Caprisonne Orange 200ml X 40 (1 Carton) ₦10,980.00',
+       'CHAMDOR SPARKLING GRAPE - 75CL ₦4,780.00',
+       'Hollandia Yoghurt Strawberry 1Ltr ₦1,995.00',
+       'Hollandia Yoghurt Strawberry 1Ltr X 10 ₦15,080.00',
+       'Hollandia Yoghurt Plain 1Ltr ₦1,995.00',
+       'Hollandia Yoghurt 315ml ₦865.00',
+       'Hollandia Uht 3.5% Full Cream Milk 1ltr, X10 ₦25,980.00',
+       'Fresh-Yo Strawberry Yoghurt 400ml X 12 Pcs ₦6,980.00',
+       'Fresh-Yo ₦320.00', 'Fresh-Yo Plain Yoghurt 400ml ₦720.00',
+       'Fresh-Yo Plain Yoghurt 400ml X 12 Pcs ₦6,980.00',
+       'Blue Band Spread- 450g ₦2,865.00',
+       'Bama Mayonnaise 236ml ₦1,300.00',
+       'Golden Penny Cube Sugar 500g ₦1,965.00',
+       'Dangote Granulated Sugar 250g ₦1,365.00',
+       'Dangote Granulated Sugar 500g ₦1,865.00',
+       'Dangote Granulated Sugar 1kg ₦2,965.00',
+       'Nestle Coffee Mate Sugar Free Hazelnut 289g ₦7,290.00',
+       'Nestle Coffee Mate Origina 400g ₦1,980.00',
+       'Hollandia Evap Full Cream Milk 120g ₦430.00',
+       'Hollandia Evap Milk 190g ₦910.00',
+       'Hollandia Evap Milk 50g ₦250.00',
+       'Loya Hi-Cal 750g Sachet ₦7,625.00', 'Cowbell 750g ₦6,230.00',
+       'Cowbell 320g Sachet ₦2,965.00',
+       'THREE CROWNS POWDER MILK (320G SACHET) ₦2,880.00',
+       'Peak Evaporated Milk (160G TIN) - Carton Price X 24 ₦25,230.00',
+       'DANO MILK POWDER, SKIMMED (400G SACHET) ₦4,920.00',
+       'DANO MILK POWDER,COOL COW(750G SACHET) ₦6,030.00',
+       'DANO MILK POWDER,COOL COW(350G SACHET) ₦3,080.00',
+       'Dano Milk Powder, Full Cream (750g Sachet) ₦10,198.00',
+       'DANO MILK POWDER,FULL CREAM(350G SACHET) ₦4,280.00',
+       'Cowbell Choco 340g Refill ₦3,280.00',
+       'Cadbury Bournvita (450g Sachet) ₦3,995.00',
+       'Nestle Milo (400g Sachet) ₦3,020.00', 
+       'Nestle Milo 800g Sachet ₦5,465.00',
+       'Nestle Milo 400g Tin ₦8,995.00',
+       'NESTLE GOLDEN MORN (600G) ₦2,635.00',
+       'NESTLE GOLDEN MORN (800g) ₦3,430.00',
+       'KELLOGGS CORN FLAKES 300G (Nigeria) ₦2,830.00',
+       'KELLOGGS COCO POPS 300G ₦2,830.00',]
+        customers_table.loc[customer, 'id'] = randint(1, 10000)
+        customers_table.loc[customer, 'customer_id'] = randint(1, 1000)
+        customers_table.loc[customer, 'first_name'] = first_name
+        customers_table.loc[customer, 'last_name'] = last_name
+        customers_table.loc[customer, 'state'] = naija.state_name()
+        customers_table.loc[customer, 'email'] = first_name.lower() + '.' + last_name.lower() + '@gmail.com'
+        customers_table.loc[customer, 'rating'] = randint(1, 5)
+        customers_table.loc[customer, 'phone_number'] = naija.phone_number()
+        customers_table.loc[customer, 'amount_bought'] = randint(1, 20)
+        customers_table.loc[customer, 'item_bought'] = np.random.choice(item_bought)
+        
+        rating = customers_table.loc[customer, 'rating'] = randint(1, 5)
+        
+        if rating > 3:
+            customer_review = choice(['Good product', 'I got what i ordered for'])
+            
+        else:
+            customer_review = choice(['Bad', 'I am not coming back', 'Scammers', 'Bad product', 'Expired product'])
+        
+        customers_table.loc[customer, 'customer_review'] = customer_review
+            
+    return customers_table
+customers_details(10000)
+
+# transforming it
+customer_table = customers_details(10000)
+customer_table.head()
+
+customer_table['price'] = customer_table['item_bought'].str.split('₦').str.get(1)
+customer_table.head()
+
+customer_table['product_bought'] = customer_table['item_bought'].str.split('₦').str.get(0)
+customer_table.head()
+
+customer_table.drop(columns=['item_bought'], inplace=True)
+
+# convert the price column to str
+
+customer_table['price'] = customer_table['price'].astype(str)
+print("After converting to string:\n", customer_table['price'])
+
+# replace all , with '' so I can easily convert to float without raising an error
+
+customer_table['price'] = customer_table['price'].str.replace(',', '')
+customer_table.head()
+
+# convert to float
+
+customer_table['price'] = customer_table['price'].astype(float)
+customer_table.head()
+
+customer_table['price'] = customer_table['price'].apply(lambda x:'₦{:,.2f}'.format(x))
+
+# drop duplicates
+customer_table = customer_table.drop_duplicates('id')
+
+# save to my database
+conn = psycopg2.connect(
+    host = 'localhost',
+    user = '',
+    database = '',
+    port = 5434,
+    password = ''
+)
+
+cur = conn.cursor()
+conn.rollback()
+cur.execute('''
+    CREATE TABLE customers_details (
+        customer_id INT PRIMARY KEY,
+        first_name VARCHAR,
+        last_name VARCHAR,
+        state VARCHAR,
+        email VARCHAR,
+        rating INT,
+        phone_number VARCHAR,
+        amount_bought INT,
+        customer_review VARCHAR,
+        price MONEY,
+        product_bought VARCHAR
+    );
+''')
+
+for index, row in customer_table.iterrows():
+    cur.execute('''
+        INSERT INTO customers_details (id, first_name, last_name, state, email, rating, phone_number, amount_bought, customer_review, price, product_bought) 
+        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+        ''', 
+        (row['id'], row['first_name'], row['last_name'], row['state'], row['email'], row['rating'], row['phone_number'], row['amount_bought'], row['customer_review'], row['price'], row['product_bought'])
+    )
+conn.commit()
+conn.close()
+cur.close()
+
+# generate order details
+def order_details(a):
+    order_table = pd.DataFrame()
+    
+    #define a date range
+    start_date = datetime.datetime(2020, 3, 12)
+    end_date = datetime.datetime(2024, 8, 30)
+    date_range = pd.date_range(start_date, end_date).to_list()
+    
+    for order in range(0, a):
+        order_date = choice(date_range)
+        delivery_date = order_date + datetime.timedelta(days=choice(range(3, 11)))
+        
+        order_table.loc[order, 'id'] = randint(1, 10000)
+        order_table.loc[order, 'order_id'] = randint(1, 10000)
+        order_table.loc[order, 'customer_id'] = randint(1, 1000)
+        order_table.loc[order, 'product_id'] = randint(1, 236)
+        order_table.loc[order, 'amount_bought'] = randint(1, 20)
+        order_table.loc[order, 'order_date'] = order_date.strftime('%Y-%m-%d')
+        order_table.loc[order, 'delivery_date'] = delivery_date.strftime('%Y-%m-%d')
+        
+        # calculate the delivery date to generate review for delivery agent
+        # calculate the diffrence in date
+        days = (delivery_date - order_date).days
+
+        # assign review based on the differnece'
+
+        if days > 4:
+            review = choice(['Poor delivery service', 'Slow delivery agent', 'Bad'])
+    
+        else:
+            review = choice(['Fast delivery', 'Good', 'Swift delivery'])
+        order_table.loc[order, 'review'] = review 
+            
+    return order_table
+order_details(10000)
+
+order_table = order_details(10000)
+order_table.head()
+
+# save to my database
+conn = psycopg2.connect(
+    host = 'localhost',
+    user = '',
+    database = '',
+    port = 5434,
+    password = ''
+)
+
+cur = conn.cursor()
+conn.rollback()
+cur.execute('''
+    CREATE TABLE customers_details (
+        order_id INT PRIMARY KEY,
+        customer_id INT,
+        product_id INT,
+        amount_bought INT,
+        order_date DATE,
+        delivery_date DATE,
+        review VARCHAR
+    );
+''')
+
+for index, row in customer_table.iterrows():
+    cur.execute('''
+        INSERT INTO customers_details (order_id, customer_id, product_id, amount_bought, order_date, delivery_date, review) 
+        VALUES (%s, %s, %s, %s, %s, %s, %s)
+        ''', 
+        (row['order_id'], row['customer_id'], row['product_id'], row['amount_bought'], row['order_date'], row['delivery_date'], row['review'])
+    )
+conn.commit()
+conn.close()
+cur.close()
+
+# generate logistic data
+def logistic_details(ld):
+    logistic_table = pd.DataFrame()
+    
+    # Define delivery agents and their unique IDs
+    delivery_agents = {
+        1: 'Shanu', 2: 'Temidayo', 3: 'Akim', 4: 'Okafor', 5: 'Daniel',
+        6: 'Dare', 7: 'Chidi', 8: 'Hamza', 9: 'Ali', 10: 'Michael', 11: 'David'
+    }
+    
+    for delivery in range(0, ld):
+        agent_id = choice(list(delivery_agents.keys()))
+        logistic_table.loc[delivery, 'agent_id'] = agent_id
+        logistic_table.loc[delivery, 'delivery_agent'] = delivery_agents[agent_id]
+        # logistic_table.loc[delivery, 'delivery_agent_rating'] = randint(1, 5)
+        
+    return logistic_table
+logistic_details(1000)
+
+logistic_table = logistic_details(1000)
+
+# join product_id, order_date and delivery_date with logistic_table
+
+logistic_table = logistic_table.assign(product_id=order_table['product_id'], order_date=order_table['order_date'], delivery_date=order_table['delivery_date'], review=order_table['review'])
+
+# save to my database
+conn = psycopg2.connect(
+    host = 'localhost',
+    user = '',
+    database = '',
+    port = 5434,
+    password = ''
+)
+
+cur = conn.cursor()
+conn.rollback()
+cur.execute('''
+    CREATE TABLE customers_details (
+        agent_id INT PRIMARY KEY,
+        delivery_agent VARCHAR,
+        product_id INT,
+        order_date DATE,
+        delivery_date DATE,
+        review VARCHAR
+    );
+''')
+
+for index, row in customer_table.iterrows():
+    cur.execute('''
+        INSERT INTO customers_details (agent_id, delivery_agent, product_id, order_date, delivery_date, review) 
+        VALUES (%s, %s, %s, %s, %s, %s)
+        ''', 
+        (row['order_id'], row['delivery_agent'], row['product_id'], row['order_date'], row['delivery_date'], row['review'])
+    )
+conn.commit()
+conn.close()
+cur.close()
